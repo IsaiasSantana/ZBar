@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "ZBarSDK"
-  s.version      = "0.10"
+  s.version      = "1.5.0"
   s.summary      = "QR and barcode scan library. http://zbar.hg.sourceforge.net:8000/hgroot/zbar/zbar"
 
   s.description  = <<-DESC
