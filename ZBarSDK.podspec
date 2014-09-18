@@ -48,7 +48,7 @@ Pod::Spec.new do |s|
   #  profile URL.
   #
   
-  s.author             = { "Pablo Carrillo" => "pablo@calvium.com" }
+  s.author             = { "Jeff Brown" => "spadix@users.sourceforge.net" }
   # Or just: s.author    = "Pablo Carrillo"
   # s.authors            = { "Pablo Carrillo" => "email@address.com" }
   # s.social_media_url   = "http://twitter.com/Pablo Carrillo"
@@ -131,8 +131,8 @@ Pod::Spec.new do |s|
     "GCC_PREPROCESSOR_DEFINITIONS"=> "NDEBUG=1" }
   # s.dependency "JSONKit", "~> 1.4"
   s.prefix_header_file = "iphone/include/prefix.pch"
-  s.compiler_flags = "-w",
-  s.requires_arc= false
+  s.compiler_flags = "-w"
+  s.requires_arc = false
 
   
 
