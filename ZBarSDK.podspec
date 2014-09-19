@@ -15,11 +15,12 @@ Pod::Spec.new do |s|
   #  summary should be tweet-length, and the description more in depth.
   #
 
-  s.name         = "ZBarSDK_Calv"
-  s.version      = "1.6.0"
-  s.summary      = "QR and barcode scan library. http://zbar.hg.sourceforge.net:8000/hgroot/zbar/zbar"
+  s.name         = "ZBarSDK"
+  s.version      = "1.7.0"
+  s.summary      = "Calvium Patched version of ZBar. QR and barcode scan library. http://zbar.hg.sourceforge.net:8000/hgroot/zbar/zbar"
 
   s.description  = <<-DESC
+                   This is a Calvium patched version.
                    ZBar is an open source software suite for reading bar codes from various sources, such as video streams, image files and raw intensity sensors. It supports many popular symbologies (types of bar codes) including EAN-13/UPC-A, UPC-E, EAN-8, Code 128, Code 39, Interleaved 2 of 5 and QR Code.
                    DESC
 
@@ -73,7 +74,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/pablocarrillo/ZBar.git", :tag => "1.6.0" }
+  s.source       = { :git => "https://github.com/pablocarrillo/ZBar.git", :tag => "1.7.0" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -86,7 +87,7 @@ Pod::Spec.new do |s|
 
   s.source_files  = "include/zbar.h", "zbar/**/*.h", "iphone/*.h", "iphone/include/**/*.h", "zbar/{config,decoder,error,image,img_scanner,refcnt,scanner,symbol}.c", "zbar/decoder/{codabar,code39,code93,code128,databar,ean,i25,qr_finder}.c", "zbar/qrcode/*.c", "iphone/*.m"
 
-  s.exclude_files = "Classes/Exclude"
+  # s.exclude_files = "Classes/Exclude"
 
   # s.public_header_files = "iphone/**/**/*.h", "include/*.h"
 
