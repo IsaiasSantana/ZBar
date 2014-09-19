@@ -15,8 +15,8 @@ Pod::Spec.new do |s|
   #  summary should be tweet-length, and the description more in depth.
   #
 
-  s.name         = "ZBarSDK"
-  s.version      = "1.5.0"
+  s.name         = "ZBarSDK_Calv"
+  s.version      = "1.6.0"
   s.summary      = "QR and barcode scan library. http://zbar.hg.sourceforge.net:8000/hgroot/zbar/zbar"
 
   s.description  = <<-DESC
@@ -73,7 +73,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/pablocarrillo/ZBar.git", :tag => "1.5.0" }
+  s.source       = { :git => "https://github.com/pablocarrillo/ZBar.git", :tag => "1.6.0" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
