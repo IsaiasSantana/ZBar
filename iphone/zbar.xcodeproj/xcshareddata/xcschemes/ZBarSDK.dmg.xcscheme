@@ -14,7 +14,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "DC1A4A4E11FF5D0500BCDA30"
-               BuildableName = "ZBarSDK.dmg"
+               BuildableName = "Package"
                BlueprintName = "ZBarSDK.dmg"
                ReferencedContainer = "container:zbar.xcodeproj">
             </BuildableReference>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="CIDR_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/usr/lib/libiconv.dylib">
+      <sourceFolder url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/usr/lib/libiconv.dylib" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../COPYING">
+      <sourceFolder url="file://$MODULE_DIR$/../COPYING" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../LICENSE">
+      <sourceFolder url="file://$MODULE_DIR$/../LICENSE" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../include/zbar.h">
+      <sourceFolder url="file://$MODULE_DIR$/../include/zbar.h" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../include/zbar/Decoder.h">
+      <sourceFolder url="file://$MODULE_DIR$/../include/zbar/Decoder.h" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../include/zbar/Exception.h">
+      <sourceFolder url="file://$MODULE_DIR$/../include/zbar/Exception.h" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../include/zbar/Image.h">
+      <sourceFolder url="file://$MODULE_DIR$/../include/zbar/Image.h" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../include/zbar/ImageScanner.h">
+      <sourceFolder url="file://$MODULE_DIR$/../include/zbar/ImageScanner.h" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../include/zbar/Processor.h">
+      <sourceFolder url="file://$MODULE_DIR$/../include/zbar/Processor.h" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../include/zbar/Scanner.h">
+      <sourceFolder url="file://$MODULE_DIR$/../include/zbar/Scanner.h" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../include/zbar/Symbol.h">
+      <sourceFolder url="file://$MODULE_DIR$/../include/zbar/Symbol.h" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../include/zbar/Video.h">
+      <sourceFolder url="file://$MODULE_DIR$/../include/zbar/Video.h" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../include/zbar/Window.h">
+      <sourceFolder url="file://$MODULE_DIR$/../include/zbar/Window.h" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$/../zbar">
+      <sourceFolder url="file://$MODULE_DIR$/../zbar" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
+

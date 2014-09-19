@@ -145,6 +145,16 @@
     return(self);
 }
 
+- (id)copyWithZone:(NSZone *)zone {
+    ZBarSymbolSet *another = [[ZBarSymbolSet alloc] initWithSymbolSet:self.zbarSymbolSet];
+
+    if(another) {
+
+        another.filterSymbols = self.filterSymbols;
+    }
+    return(another);
+}
+
 - (void) dealloc
 {
     if(set) {

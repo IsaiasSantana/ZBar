@@ -24,6 +24,7 @@
 #import <ZBarSDK/ZBarReaderView.h>
 
 #define MODULE ZBarReaderView
+
 #import "debug.h"
 
 // silence warning
@@ -32,77 +33,73 @@
 
 @implementation ZBarReaderView
 
-@synthesize readerDelegate, tracksSymbols, trackingColor, torchMode, showsFPS,
-    zoom, maxZoom, scanCrop, previewTransform, captureReader;
+@synthesize readerDelegate, tracksSymbols, trackingColor, torchMode, showsFPS, zoom, maxZoom, scanCrop, previewTransform, captureReader;
 @dynamic scanner, allowsPinchZoom, enableCache, device, session;
 
-+ (id) alloc
-{
-    if(self == [ZBarReaderView class]) {
++ (id)alloc {
+    if (self == [ZBarReaderView class]) {
         // this is an abstract wrapper for implementation selected
         // at compile time.  replace with concrete subclass.
-        return((id)[ZBarReaderViewImpl alloc]);
+        return ((id) [ZBarReaderViewImpl alloc]);
     }
-    return([super alloc]);
+    return ([super alloc]);
 }
 
-- (void) initSubviews
-{
+- (void)initSubviews {
     assert(preview);
 
     overlay = [CALayer new];
     overlay.backgroundColor = [UIColor clearColor].CGColor;
-    [preview addSublayer: overlay];
+    [preview addSublayer:overlay];
 
 #ifndef NDEBUG
     overlay.borderWidth = 2;
-    overlay.borderColor = [UIColor colorWithRed: 1
-                                   green: 0
-                                   blue: 0
-                                   alpha: .5].CGColor;
+    overlay.borderColor = [UIColor colorWithRed:1
+                                          green:0
+                                           blue:0
+                                          alpha:.5].CGColor;
     cropLayer = [CALayer new];
     cropLayer.backgroundColor = [UIColor clearColor].CGColor;
     cropLayer.borderWidth = 2;
-    cropLayer.borderColor = [UIColor colorWithRed: 0
-                                     green: 0
-                                     blue: 1
-                                     alpha: .5].CGColor;
-    [overlay addSublayer: cropLayer];
+    cropLayer.borderColor = [UIColor colorWithRed:0
+                                            green:0
+                                             blue:1
+                                            alpha:.5].CGColor;
+    [overlay addSublayer:cropLayer];
 #endif
 
     tracking = [CALayer new];
     tracking.opacity = 0;
     tracking.borderWidth = 1;
     tracking.backgroundColor = [UIColor clearColor].CGColor;
-    [overlay addSublayer: tracking];
+    [overlay addSublayer:tracking];
 
     trackingColor = [[UIColor greenColor]
-                        retain];
+            retain];
     tracking.borderColor = trackingColor.CGColor;
 
     fpsView = [UIView new];
-    fpsView.backgroundColor = [UIColor colorWithWhite: 0
-                                       alpha: .333];
+    fpsView.backgroundColor = [UIColor colorWithWhite:0
+                                                alpha:.333];
     fpsView.layer.cornerRadius = 12;
     fpsView.hidden = YES;
-    [self addSubview: fpsView];
+    [self addSubview:fpsView];
 
     fpsLabel = [[UILabel alloc]
-                   initWithFrame: CGRectMake(0, 0, 80, 32)];
+            initWithFrame:CGRectMake(0, 0, 80, 32)];
     fpsLabel.backgroundColor = [UIColor clearColor];
-    fpsLabel.textColor = [UIColor colorWithRed: .333
-                                  green: .666
-                                  blue: 1
-                                  alpha: 1];
-    fpsLabel.font = [UIFont systemFontOfSize: 18];
+    fpsLabel.textColor = [UIColor colorWithRed:.333
+                                         green:.666
+                                          blue:1
+                                         alpha:1];
+    fpsLabel.font = [UIFont systemFontOfSize:18];
     fpsLabel.textAlignment = UITextAlignmentRight;
-    [fpsView addSubview: fpsLabel];
+    [fpsView addSubview:fpsLabel];
 
     self.zoom = 1.25;
 }
 
-- (void) _initWithImageScanner: (ZBarImageScanner*) scanner
-{
+- (void)_initWithImageScanner:(ZBarImageScanner *)scanner {
     assert(scanner);
 
     tracksSymbols = YES;
@@ -114,67 +111,63 @@
     maxZoom = 2;
 
     pinch = [[UIPinchGestureRecognizer alloc]
-                initWithTarget: self
-                action: @selector(handlePinch)];
-    [self addGestureRecognizer: pinch];
+            initWithTarget:self
+                    action:@selector(handlePinch)];
+    [self addGestureRecognizer:pinch];
 }
 
-- (id) initWithImageScanner: (ZBarImageScanner*) scanner
-{
-    self = [super initWithFrame: CGRectMake(0, 0, 320, 426)];
-    if(!self)
-        return(nil);
+- (id)initWithImageScanner:(ZBarImageScanner *)scanner {
+    self = [super initWithFrame:CGRectMake(0, 0, 320, 426)];
+    if (!self)
+        return (nil);
 
     self.backgroundColor = [UIColor blackColor];
     self.contentMode = UIViewContentModeScaleAspectFill;
     self.clipsToBounds = YES;
     self.autoresizingMask =
-        UIViewAutoresizingFlexibleWidth |
-        UIViewAutoresizingFlexibleHeight;
+            UIViewAutoresizingFlexibleWidth |
+                    UIViewAutoresizingFlexibleHeight;
 
-    [self _initWithImageScanner: scanner];
-    return(self);
+    [self _initWithImageScanner:scanner];
+    return (self);
 }
 
-- (id) init
-{
+- (id)init {
     ZBarImageScanner *scanner =
-        [[ZBarImageScanner new]
-            autorelease];
-    self = [self initWithImageScanner: scanner];
-    if(!self)
-        return(nil);
+            [[ZBarImageScanner new]
+                    autorelease];
+    self = [self initWithImageScanner:scanner];
+    if (!self)
+        return (nil);
 
-    [scanner setSymbology: 0
-             config: ZBAR_CFG_X_DENSITY
-             to: 3];
-    [scanner setSymbology: 0
-             config: ZBAR_CFG_Y_DENSITY
-             to: 3];
-    return(self);
+    [scanner setSymbology:0
+                   config:ZBAR_CFG_X_DENSITY
+                       to:3];
+    [scanner setSymbology:0
+                   config:ZBAR_CFG_Y_DENSITY
+                       to:3];
+    return (self);
 }
 
-- (id) initWithCoder: (NSCoder*) decoder
-{
-    self = [super initWithCoder: decoder];
-    if(!self)
-        return(nil);
+- (id)initWithCoder:(NSCoder *)decoder {
+    self = [super initWithCoder:decoder];
+    if (!self)
+        return (nil);
     ZBarImageScanner *scanner =
-        [[ZBarImageScanner new]
-            autorelease];
-    [self _initWithImageScanner: scanner];
+            [[ZBarImageScanner new]
+                    autorelease];
+    [self _initWithImageScanner:scanner];
 
-    [scanner setSymbology: 0
-             config: ZBAR_CFG_X_DENSITY
-             to: 3];
-    [scanner setSymbology: 0
-             config: ZBAR_CFG_Y_DENSITY
-             to: 3];
-    return(self);
+    [scanner setSymbology:0
+                   config:ZBAR_CFG_X_DENSITY
+                       to:3];
+    [scanner setSymbology:0
+                   config:ZBAR_CFG_Y_DENSITY
+                       to:3];
+    return (self);
 }
 
-- (void) dealloc
-{
+- (void)dealloc {
     [preview removeFromSuperlayer];
     [preview release];
     preview = nil;
@@ -195,65 +188,60 @@
     [super dealloc];
 }
 
-- (void) resetTracking
-{
+- (void)resetTracking {
     [tracking removeAllAnimations];
     [CATransaction begin];
-    [CATransaction setDisableActions: YES];
+    [CATransaction setDisableActions:YES];
     CGSize size = overlay.bounds.size;
     CGRect crop = effectiveCrop;
     tracking.frame = CGRectMake(crop.origin.x * size.width,
-                                crop.origin.y * size.height,
-                                crop.size.width * size.width,
-                                crop.size.height * size.height);
+            crop.origin.y * size.height,
+            crop.size.width * size.width,
+            crop.size.height * size.height);
     tracking.opacity = 0;
     [CATransaction commit];
 }
 
-- (void) updateCrop
-{
+- (void)updateCrop {
 }
 
-static inline CGFloat rotationForInterfaceOrientation (int orient)
-{
+static inline CGFloat rotationForInterfaceOrientation (int orient) {
     // resolve camera/device image orientation to view/interface orientation
-    switch(orient)
-    {
-    case UIInterfaceOrientationLandscapeLeft:
-        return(M_PI_2);
-    case UIInterfaceOrientationPortraitUpsideDown:
-        return(M_PI);
-    case UIInterfaceOrientationLandscapeRight:
-        return(3 * M_PI_2);
-    case UIInterfaceOrientationPortrait:
-        return(2 * M_PI);
+    switch (orient) {
+        case UIInterfaceOrientationLandscapeLeft:
+            return (M_PI_2);
+        case UIInterfaceOrientationPortraitUpsideDown:
+            return (M_PI);
+        case UIInterfaceOrientationLandscapeRight:
+            return (3 * M_PI_2);
+        case UIInterfaceOrientationPortrait:
+            return (2 * M_PI);
     }
-    return(0);
+    return (0);
 }
 
-- (void) layoutSubviews
-{
+- (void)layoutSubviews {
     CGRect bounds = self.bounds;
-    if(!bounds.size.width || !bounds.size.height)
+    if (!bounds.size.width || !bounds.size.height)
         return;
 
     [CATransaction begin];
-    if(animationDuration) {
-        [CATransaction setAnimationDuration: animationDuration];
+    if (animationDuration) {
+        [CATransaction setAnimationDuration:animationDuration];
         [CATransaction setAnimationTimingFunction:
-            [CAMediaTimingFunction functionWithName:
-                kCAMediaTimingFunctionEaseInEaseOut]];
+                               [CAMediaTimingFunction functionWithName:
+                                                              kCAMediaTimingFunctionEaseInEaseOut]];
     }
     else
-        [CATransaction setDisableActions: YES];
+        [CATransaction setDisableActions:YES];
 
     [super layoutSubviews];
     fpsView.frame = CGRectMake(bounds.size.width - 80, bounds.size.height - 32,
-                               80 + 12, 32 + 12);
+            80 + 12, 32 + 12);
 
     // orient view bounds to match camera image
     CGSize psize;
-    if(UIInterfaceOrientationIsPortrait(interfaceOrientation))
+    if (UIInterfaceOrientationIsPortrait(interfaceOrientation))
         psize = CGSizeMake(bounds.size.height, bounds.size.width);
     else
         psize = bounds.size;
@@ -263,7 +251,7 @@ static inline CGFloat rotationForInterfaceOrientation (int orient)
     CGFloat scalex = imageSize.width / psize.width;
     CGFloat scaley = imageSize.height / psize.height;
     imageScale = (scalex < scaley) ? scalex : scaley;
-    if(!imageScale)
+    if (!imageScale)
         imageScale = 1;
     // apply zoom
     imageScale /= zoom;
@@ -272,47 +260,47 @@ static inline CGFloat rotationForInterfaceOrientation (int orient)
     CGFloat z = 1 / zoom;
     CGFloat t = (1 - z) / 2;
     CGRect zoomCrop =
-        CGRectMake(scanCrop.origin.x * z + t,
-                   scanCrop.origin.y * z + t,
-                   scanCrop.size.width * z,
-                   scanCrop.size.height * z);
+            CGRectMake(scanCrop.origin.x * z + t,
+                    scanCrop.origin.y * z + t,
+                    scanCrop.size.width * z,
+                    scanCrop.size.height * z);
 
     // convert effective preview area to normalized image coordinates
     CGRect previewCrop;
-    if(scalex < scaley && imageSize.height)
+    if (scalex < scaley && imageSize.height)
         previewCrop.size =
-            CGSizeMake(z, psize.height * imageScale / imageSize.height);
-    else if(imageSize.width)
+                CGSizeMake(z, psize.height * imageScale / imageSize.height);
+    else if (imageSize.width)
         previewCrop.size =
-            CGSizeMake(psize.width * imageScale / imageSize.width, z);
+                CGSizeMake(psize.width * imageScale / imageSize.width, z);
     else
         previewCrop.size = CGSizeMake(1, 1);
     previewCrop.origin = CGPointMake((1 - previewCrop.size.width) / 2,
-                                     (1 - previewCrop.size.height) / 2);
+            (1 - previewCrop.size.height) / 2);
 
     // clip crop to visible preview area
     effectiveCrop = CGRectIntersection(zoomCrop, previewCrop);
-    if(CGRectIsNull(effectiveCrop))
+    if (CGRectIsNull(effectiveCrop))
         effectiveCrop = zoomCrop;
 
     // size preview to match image in view coordinates
     CGFloat viewScale = 1 / imageScale;
-    if(imageSize.width && imageSize.height)
+    if (imageSize.width && imageSize.height)
         psize = CGSizeMake(imageSize.width * viewScale,
-                           imageSize.height * viewScale);
+                imageSize.height * viewScale);
 
     preview.bounds = CGRectMake(0, 0, psize.height, psize.width);
     // center preview in view
     preview.position = CGPointMake(bounds.size.width / 2,
-                                   bounds.size.height / 2);
+            bounds.size.height / 2);
 
     CGFloat angle = rotationForInterfaceOrientation(interfaceOrientation);
     CATransform3D xform =
-        CATransform3DMakeAffineTransform(previewTransform);
+            CATransform3DMakeAffineTransform(previewTransform);
     preview.transform = CATransform3DRotate(xform, angle, 0, 0, 1);
 
     // scale overlay to match actual image
-    if(imageSize.width && imageSize.height)
+    if (imageSize.width && imageSize.height)
         overlay.bounds = CGRectMake(0, 0, imageSize.width, imageSize.height);
     else
         overlay.bounds = CGRectMake(0, 0, psize.width, psize.height);
@@ -329,17 +317,17 @@ static inline CGFloat rotationForInterfaceOrientation (int orient)
     overlay.borderWidth = 2 * imageScale;
     cropLayer.borderWidth = 2 * imageScale;
     cropLayer.frame = CGRectMake(effectiveCrop.origin.x * imageSize.width,
-                                 effectiveCrop.origin.y * imageSize.height,
-                                 effectiveCrop.size.width * imageSize.width,
-                                 effectiveCrop.size.height * imageSize.height);
+            effectiveCrop.origin.y * imageSize.height,
+            effectiveCrop.size.width * imageSize.width,
+            effectiveCrop.size.height * imageSize.height);
     zlog(@"layoutSubviews: bounds=%@ orient=%d image=%@ crop=%@ zoom=%g\n"
-         @"=> preview=%@ crop=(z%@ p%@ %@ i%@) scale=%g %c %g = 1/%g",
-         NSStringFromCGSize(bounds.size), interfaceOrientation,
-         NSStringFromCGSize(imageSize), NSStringFromCGRect(scanCrop), zoom,
-         NSStringFromCGSize(psize), NSStringFromCGRect(zoomCrop),
-         NSStringFromCGRect(previewCrop), NSStringFromCGRect(effectiveCrop),
-         NSStringFromCGRect(cropLayer.frame),
-         scalex, (scalex > scaley) ? '>' : '<', scaley, viewScale);
+            @"=> preview=%@ crop=(z%@ p%@ %@ i%@) scale=%g %c %g = 1/%g",
+            NSStringFromCGSize(bounds.size), interfaceOrientation,
+            NSStringFromCGSize(imageSize), NSStringFromCGRect(scanCrop), zoom,
+            NSStringFromCGSize(psize), NSStringFromCGRect(zoomCrop),
+            NSStringFromCGRect(previewCrop), NSStringFromCGRect(effectiveCrop),
+            NSStringFromCGRect(cropLayer.frame),
+            scalex, (scalex > scaley) ? '>' : '<', scaley, viewScale);
 #endif
 
     [self resetTracking];
@@ -349,8 +337,7 @@ static inline CGFloat rotationForInterfaceOrientation (int orient)
     animationDuration = 0;
 }
 
-- (void) setImageSize: (CGSize) size
-{
+- (void)setImageSize:(CGSize)size {
     zlog(@"imageSize=%@", NSStringFromCGSize(size));
     imageSize = size;
 
@@ -360,45 +347,39 @@ static inline CGFloat rotationForInterfaceOrientation (int orient)
     [self setNeedsLayout];
 }
 
-- (void) willRotateToInterfaceOrientation: (UIInterfaceOrientation) orient
-                                 duration: (NSTimeInterval) duration
-{
-    if(interfaceOrientation != orient) {
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)orient
+                                duration:(NSTimeInterval)duration {
+    if (interfaceOrientation != orient) {
         zlog(@"orient=%d #%g", orient, duration);
         interfaceOrientation = orient;
         animationDuration = duration;
     }
 }
 
-- (void) setScanCrop: (CGRect) r
-{
-    if(CGRectEqualToRect(scanCrop, r))
+- (void)setScanCrop:(CGRect)r {
+    if (CGRectEqualToRect(scanCrop, r))
         return;
     scanCrop = r;
     [self setNeedsLayout];
 }
 
-- (void) setTracksSymbols: (BOOL) track
-{
-    if(track == tracksSymbols)
+- (void)setTracksSymbols:(BOOL)track {
+    if (track == tracksSymbols)
         return;
     tracksSymbols = track;
     [self resetTracking];
 }
 
-- (BOOL) allowsPinchZoom
-{
-    return(pinch.enabled);
+- (BOOL)allowsPinchZoom {
+    return (pinch.enabled);
 }
 
-- (void) setAllowsPinchZoom: (BOOL) enabled
-{
+- (void)setAllowsPinchZoom:(BOOL)enabled {
     pinch.enabled = enabled;
 }
 
-- (void) setTrackingColor: (UIColor*) color
-{
-    if(!color)
+- (void)setTrackingColor:(UIColor *)color {
+    if (!color)
         return;
     [color retain];
     [trackingColor release];
@@ -406,53 +387,48 @@ static inline CGFloat rotationForInterfaceOrientation (int orient)
     tracking.borderColor = color.CGColor;
 }
 
-- (void) setShowsFPS: (BOOL) show
-{
-    if(show == showsFPS)
+- (void)setShowsFPS:(BOOL)show {
+    if (show == showsFPS)
         return;
     fpsView.hidden = !show;
 }
 
-- (void) setZoom: (CGFloat) z
-{
-    if(z < 1.0)
+- (void)setZoom:(CGFloat)z {
+    if (z < 1.0)
         z = 1.0;
-    if(z > maxZoom)
+    if (z > maxZoom)
         z = maxZoom;
-    if(z == zoom)
+    if (z == zoom)
         return;
     zoom = z;
 
     [self setNeedsLayout];
 }
 
-- (void) setZoom: (CGFloat) z
-        animated: (BOOL) animated
-{
+- (void)setZoom:(CGFloat)z
+       animated:(BOOL)animated {
     [CATransaction begin];
-    if(animated) {
-        [CATransaction setAnimationDuration: .1];
+    if (animated) {
+        [CATransaction setAnimationDuration:.1];
         [CATransaction setAnimationTimingFunction:
-            [CAMediaTimingFunction functionWithName:
-                kCAMediaTimingFunctionLinear]];
+                               [CAMediaTimingFunction functionWithName:
+                                                              kCAMediaTimingFunctionLinear]];
     }
     else
-        [CATransaction setDisableActions: YES];
+        [CATransaction setDisableActions:YES];
     // FIXME animate from current value
     self.zoom = z;
     [self layoutIfNeeded];
     [CATransaction commit];
 }
 
-- (void) setPreviewTransform: (CGAffineTransform) xfrm
-{
+- (void)setPreviewTransform:(CGAffineTransform)xfrm {
     previewTransform = xfrm;
     [self setNeedsLayout];
 }
 
-- (void) start
-{
-    if(started)
+- (void)start {
+    if (started)
         return;
     started = YES;
 
@@ -460,55 +436,51 @@ static inline CGFloat rotationForInterfaceOrientation (int orient)
     fpsLabel.text = @"--- fps ";
 
     [[UIDevice currentDevice]
-        beginGeneratingDeviceOrientationNotifications];
+            beginGeneratingDeviceOrientationNotifications];
 }
 
-- (void) stop
-{
-    if(!started)
+- (void)stop {
+    if (!started)
         return;
     started = NO;
 
     [[UIDevice currentDevice]
-        endGeneratingDeviceOrientationNotifications];
+            endGeneratingDeviceOrientationNotifications];
 }
 
-- (void) flushCache
-{
+- (void)flushCache {
 }
 
 // UIGestureRecognizer callback
 
-- (void) handlePinch
-{
-    if(pinch.state == UIGestureRecognizerStateBegan)
+- (void)handlePinch {
+    if (pinch.state == UIGestureRecognizerStateBegan)
         zoom0 = zoom;
     CGFloat z = zoom0 * pinch.scale;
-    [self setZoom: z
-          animated: YES];
+    [self setZoom:z
+         animated:YES];
 
-    if((zoom < 1.5) != (z < 1.5)) {
+    if ((zoom < 1.5) != (z < 1.5)) {
         int d = (z < 1.5) ? 3 : 2;
         ZBarImageScanner *scanner = self.scanner;
-        @synchronized(scanner) {
-            [scanner setSymbology: 0
-                     config: ZBAR_CFG_X_DENSITY
-                     to: d];
-            [scanner setSymbology: 0
-                     config: ZBAR_CFG_Y_DENSITY
-                     to: d];
+        @synchronized (scanner) {
+            [scanner setSymbology:0
+                           config:ZBAR_CFG_X_DENSITY
+                               to:d];
+            [scanner setSymbology:0
+                           config:ZBAR_CFG_Y_DENSITY
+                               to:d];
         }
     }
 }
 
-- (void) updateTracking: (CALayer*) trk
-             withSymbol: (ZBarSymbol*) sym
-{
-    if(!sym)
+- (void)updateTracking:(CALayer *)trk
+            withSymbol:(ZBarSymbol *)sym {
+    if (!sym)
         return;
 
     CGRect r = sym.bounds;
-    if(r.size.width <= 32 && r.size.height <= 32)
+    if (r.size.width <= 32 && r.size.height <= 32)
         return;
     r = CGRectInset(r, -24, -24);
 
@@ -523,74 +495,76 @@ static inline CGFloat rotationForInterfaceOrientation (int orient)
     r.size.height = (r.size.height * 3 + cr.size.height) / 4;
 
     CAMediaTimingFunction *linear =
-        [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionLinear];
+            [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
 
     CABasicAnimation *resize =
-        [CABasicAnimation animationWithKeyPath: @"bounds"];
-    resize.fromValue = [NSValue valueWithCGRect: cr];
-    resize.toValue = [NSValue valueWithCGRect: r];
+            [CABasicAnimation animationWithKeyPath:@"bounds"];
+    resize.fromValue = [NSValue valueWithCGRect:cr];
+    resize.toValue = [NSValue valueWithCGRect:r];
     resize.duration = .2;
     resize.timingFunction = linear;
     resize.fillMode = kCAFillModeForwards;
     resize.removedOnCompletion = NO;
 
     CABasicAnimation *move =
-        [CABasicAnimation animationWithKeyPath: @"position"];
-    move.fromValue = [NSValue valueWithCGPoint: cp];
-    move.toValue = [NSValue valueWithCGPoint: p];
+            [CABasicAnimation animationWithKeyPath:@"position"];
+    move.fromValue = [NSValue valueWithCGPoint:cp];
+    move.toValue = [NSValue valueWithCGPoint:p];
     move.duration = .2;
     move.timingFunction = linear;
     move.fillMode = kCAFillModeForwards;
     move.removedOnCompletion = NO;
 
     CABasicAnimation *on =
-        [CABasicAnimation animationWithKeyPath: @"opacity"];
-    on.fromValue = [NSNumber numberWithDouble: current.opacity];
-    on.toValue = [NSNumber numberWithDouble: 1];
+            [CABasicAnimation animationWithKeyPath:@"opacity"];
+    on.fromValue = [NSNumber numberWithDouble:current.opacity];
+    on.toValue = [NSNumber numberWithDouble:1];
     on.duration = .2;
     on.timingFunction = linear;
     on.fillMode = kCAFillModeForwards;
     on.removedOnCompletion = NO;
 
     CABasicAnimation *off = nil;
-    if(!TARGET_IPHONE_SIMULATOR) {
-        off = [CABasicAnimation animationWithKeyPath: @"opacity"];
-        off.fromValue = [NSNumber numberWithDouble: 1];
-        off.toValue = [NSNumber numberWithDouble: 0];
+    if (!TARGET_IPHONE_SIMULATOR) {
+        off = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        off.fromValue = [NSNumber numberWithDouble:1];
+        off.toValue = [NSNumber numberWithDouble:0];
         off.beginTime = .5;
         off.duration = .5;
         off.timingFunction = linear;
     }
 
     CAAnimationGroup *group = [CAAnimationGroup animation];
-    group.animations = [NSArray arrayWithObjects: resize, move, on, off, nil];
+    group.animations = [NSArray arrayWithObjects:resize, move, on, off, nil];
     group.duration = 1;
     group.fillMode = kCAFillModeForwards;
     group.removedOnCompletion = !TARGET_IPHONE_SIMULATOR;
-    [trk addAnimation: group
-         forKey: @"tracking"];
+    [trk addAnimation:group
+               forKey:@"tracking"];
 }
 
-- (void) didTrackSymbols: (ZBarSymbolSet*) syms
-{
-    if(!tracksSymbols)
+- (void)didTrackSymbols:(ZBarSymbolSet *)syms {
+    ZBarSymbolSet *privSyms = [syms copy];
+    if (!tracksSymbols)
         return;
 
-    int n = syms.count;
+    int n = privSyms.count;
     assert(n);
-    if(!n)
+    if (!n)
         return;
 
     ZBarSymbol *sym = nil;
-    for(ZBarSymbol *s in syms)
-        if(!sym || s.type == ZBAR_QRCODE || s.quality > sym.quality)
+    for (ZBarSymbol *s in privSyms) {
+        if (!sym || s.type == ZBAR_QRCODE || s.quality > sym.quality) {
             sym = s;
+        }
+    }
     assert(sym);
-    if(!sym)
+    if (!sym)
         return;
 
-    [self updateTracking: tracking
-          withSymbol: sym];
+    [self updateTracking:tracking
+              withSymbol:sym];
 }
 
 @end
