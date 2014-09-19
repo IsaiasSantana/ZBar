@@ -114,7 +114,7 @@ Pod::Spec.new do |s|
   # s.framework  = "SomeFramework"
   s.frameworks = "AVFoundation","CoreGraphics", "CoreMedia", "CoreVideo", "QuartzCore"
 
-  # s.library   = "iconv"
+  s.library   = "iconv"
   # s.libraries = "iconv", "xml2"
 
 
@@ -126,7 +126,7 @@ Pod::Spec.new do |s|
 
   # s.requires_arc = true
 
- s.xcconfig = { "EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*][arch=*]"=> "ZBarReaderViewImpl_Simulator.m",
+  s.xcconfig = { "EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*][arch=*]"=> "ZBarReaderViewImpl_Simulator.m",
     "EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*][arch=*]"=> "ZBarReaderViewImpl_Capture.m ZBarCaptureReader.m",
     "GCC_PREPROCESSOR_DEFINITIONS"=> "NDEBUG=1" }
   # s.dependency "JSONKit", "~> 1.4"
