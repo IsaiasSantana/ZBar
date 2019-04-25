@@ -801,7 +801,7 @@
 					../include,
 					../zbar,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = zbar;
 				SKIP_INSTALL = YES;
@@ -822,7 +822,7 @@
 					../include,
 					../zbar,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = zbar;
 				SKIP_INSTALL = YES;
@@ -995,7 +995,7 @@
 					../include,
 					../zbar,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = zbar;
 				SKIP_INSTALL = YES;

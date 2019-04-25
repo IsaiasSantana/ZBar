@@ -364,39 +364,47 @@
 - (void)       captureReader: (ZBarCaptureReader*) reader
   didReadNewSymbolsFromImage: (ZBarImage*) zimg
 {
-    zlog(@"scanned %d symbols: %@", zimg.symbols.count, zimg);
-    if(!readerDelegate)
-        return;
+    @try {
+        if(!zimg)
+            return;
 
-    UIImageOrientation orient = [UIDevice currentDevice].orientation;
-    if(!UIDeviceOrientationIsValidInterfaceOrientation(orient)) {
-        orient = interfaceOrientation;
-        if(orient == UIInterfaceOrientationLandscapeLeft)
-            orient = UIDeviceOrientationLandscapeLeft;
-        else if(orient == UIInterfaceOrientationLandscapeRight)
-            orient = UIDeviceOrientationLandscapeRight;
-    }
-    switch(orient)
-    {
-    case UIDeviceOrientationPortraitUpsideDown:
-        orient = UIImageOrientationLeft;
-        break;
-    case UIDeviceOrientationLandscapeLeft:
-        orient = UIImageOrientationUp;
-        break;
-    case UIDeviceOrientationLandscapeRight:
-        orient = UIImageOrientationDown;
-        break;
-    default:
-        orient = UIImageOrientationRight;
-        break;
-    }
+    //    zlog(@"scanned %d symbols: %@", zimg.symbols.count, zimg);
+        if(!readerDelegate)
+            return;
 
-    UIImage *uiimg = [zimg UIImageWithOrientation: orient];
-    [readerDelegate
-        readerView: self
-        didReadSymbols: zimg.symbols
-        fromImage: uiimg];
+        UIImageOrientation orient = [UIDevice currentDevice].orientation;
+        if(!UIDeviceOrientationIsValidInterfaceOrientation(orient)) {
+            orient = interfaceOrientation;
+            if(orient == UIInterfaceOrientationLandscapeLeft)
+                orient = UIDeviceOrientationLandscapeLeft;
+            else if(orient == UIInterfaceOrientationLandscapeRight)
+                orient = UIDeviceOrientationLandscapeRight;
+        }
+
+        switch(orient)
+        {
+        case UIDeviceOrientationPortraitUpsideDown:
+            orient = UIImageOrientationLeft;
+            break;
+        case UIDeviceOrientationLandscapeLeft:
+            orient = UIImageOrientationUp;
+            break;
+        case UIDeviceOrientationLandscapeRight:
+            orient = UIImageOrientationDown;
+            break;
+        default:
+            orient = UIImageOrientationRight;
+            break;
+        }
+
+        UIImage *uiimg = [zimg UIImageWithOrientation: orient];
+        [readerDelegate
+            readerView: self
+            didReadSymbols: zimg.symbols
+         fromImage: uiimg];
+    } @catch (NSException *exception) {
+        NSLog(@"%@", exception.reason);
+    }
 }
 
 @end
